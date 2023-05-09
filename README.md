@@ -1,5 +1,8 @@
 # LightWave 3D Rust Parser
 
+![](https://img.shields.io/github/actions/workflow/status/theaninova/lightwave-3d/rust.yml)
+![https://crates.io/crates/lightwave-3d](https://img.shields.io/crates/v/lightwave-3d)
+
 Complete LWO2 parser for Rust.
 
 Basic Usage
