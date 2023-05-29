@@ -1,8 +1,8 @@
-use crate::binrw_helpers::until_size_limit;
+use crate::binrw_helpers::{lwo_null_string, until_size_limit};
 use crate::iff::SubChunk;
 use crate::lwo2::sub_tags::plugin::PluginServerNameAndData;
 use crate::lwo2::sub_tags::{EnableState, ValueEnvelope};
-use binrw::{binread, NullString, PosValue};
+use binrw::{binread, PosValue};
 
 /// Describes an image or a sequence of images. Surface definitions specify images by referring to
 /// CLIP chunks. The term "clip" is used to describe these because they can be numbered sequences
@@ -67,10 +67,10 @@ pub enum ImageClipSubChunk {
 pub struct PluginAnimation {
     #[br(temp)]
     start_pos: PosValue<()>,
-    #[br(align_after = 2)]
-    pub file_name: NullString,
-    #[br(align_after = 2)]
-    pub server_name: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub file_name: String,
+    #[br(parse_with = lwo_null_string)]
+    pub server_name: String,
     pub flags: u16,
     #[br(temp)]
     end_pos: PosValue<()>,
@@ -87,8 +87,8 @@ pub struct PluginAnimation {
 pub struct ColorSpace {
     pub flags: u16,
     pub color_space: u16,
-    #[br(align_after = 2)]
-    pub file_name: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub file_name: String,
 }
 
 /// A still image with color-cycling is a source defined by a neutral-format name and cycling
@@ -104,8 +104,8 @@ pub struct ColorSpace {
 pub struct ColorCyclingStill {
     pub lo: i16,
     pub hi: i16,
-    #[br(align_after = 2)]
-    pub name: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub name: String,
 }
 
 /// Defines source times for an animated clip.
@@ -131,8 +131,8 @@ pub struct Flags {
 #[br(import(_length: u32))]
 #[derive(Debug)]
 pub struct StillImage {
-    #[br(align_after = 2)]
-    pub name: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub name: String,
 }
 
 /// The source is a numbered sequence of still image files. Each filename contains a fixed number
@@ -154,10 +154,10 @@ pub struct ImageSequence {
     pub reserved: u16,
     pub start: i16,
     pub end: i16,
-    #[br(align_after = 2)]
-    pub prefix: NullString,
-    #[br(align_after = 2)]
-    pub suffix: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub prefix: String,
+    #[br(parse_with = lwo_null_string)]
+    pub suffix: String,
 }
 
 /// The source is a copy, or instance, of another clip, given by the index. The string is a unique
@@ -167,6 +167,6 @@ pub struct ImageSequence {
 #[derive(Debug)]
 pub struct Reference {
     pub index: u32,
-    #[br(align_after = 2)]
-    pub string: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub string: String,
 }

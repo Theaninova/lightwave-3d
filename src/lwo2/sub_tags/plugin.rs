@@ -1,4 +1,5 @@
-use binrw::{binread, NullString, PosValue};
+use crate::binrw_helpers::lwo_null_string;
+use binrw::{binread, PosValue};
 
 #[binread]
 #[br(import(length: u32))]
@@ -6,8 +7,8 @@ use binrw::{binread, NullString, PosValue};
 pub struct PluginServerNameAndData {
     #[br(temp)]
     start_pos: PosValue<()>,
-    #[br(align_after = 2)]
-    pub server_name: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub server_name: String,
     pub flags: u16,
     #[br(temp)]
     end_pos: PosValue<()>,

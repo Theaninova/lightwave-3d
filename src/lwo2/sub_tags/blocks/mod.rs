@@ -1,11 +1,11 @@
-use crate::binrw_helpers::until_size_limit;
+use crate::binrw_helpers::{lwo_null_string, until_size_limit};
 use crate::iff::SubChunk;
 use crate::lwo2::sub_tags::blocks::gradient_texture::GradientTextureSubChunk;
 use crate::lwo2::sub_tags::blocks::image_texture::SurfaceBlockImageTextureSubChunk;
 use crate::lwo2::sub_tags::blocks::procedural_texture::ProceduralTextureSubChunk;
 use crate::lwo2::sub_tags::EnableState;
 use crate::lwo2::vx;
-use binrw::{binread, NullString};
+use binrw::{binread};
 
 pub mod gradient_texture;
 pub mod image_texture;
@@ -46,8 +46,8 @@ pub enum SurfaceBlocks {
 #[br(import(length: u32))]
 #[derive(Debug)]
 pub struct Algorithm {
-    #[br(align_after = 2)]
-    pub algorithm_name: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub algorithm_name: String,
     #[br(count = length - (algorithm_name.len() as u32 + 1))]
     pub data: Vec<u8>,
 }

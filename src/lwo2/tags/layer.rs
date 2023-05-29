@@ -1,4 +1,5 @@
-use binrw::{binread, NullString, PosValue};
+use crate::binrw_helpers::lwo_null_string;
+use binrw::{binread, PosValue};
 
 /// Signals the start of a new layer. All the data chunks which follow will be included in this
 /// layer until another layer chunk is encountered. If data is encountered before a layer chunk,
@@ -12,8 +13,8 @@ pub struct Layer {
     pub number: u16,
     pub flags: u16,
     pub pivot: [f32; 3],
-    #[br(align_after = 2)]
-    pub name: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub name: String,
     pub status: PosValue<()>,
     #[br(if(status.pos < length as u64))]
     pub parent: Option<u16>,

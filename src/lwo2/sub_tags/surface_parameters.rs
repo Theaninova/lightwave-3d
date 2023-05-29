@@ -1,8 +1,9 @@
+use crate::binrw_helpers::lwo_null_string;
 use crate::iff::SubChunk;
 use crate::lwo2::sub_tags::blocks::SurfaceBlocks;
 use crate::lwo2::sub_tags::{ValueEnvelope, VectorEnvelope, VxReference};
 use crate::lwo2::vx;
-use binrw::{binread, NullString};
+use binrw::{binread};
 
 #[binread]
 #[derive(Debug)]
@@ -74,8 +75,8 @@ pub struct VertexColorMap {
     #[br(parse_with = vx)]
     pub envelope: u32,
     pub vmap_type: [u8; 4],
-    #[br(align_after = 2)]
-    pub name: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub name: String,
 }
 
 /// The alpha mode defines the alpha channel output options for the surface.

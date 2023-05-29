@@ -1,4 +1,5 @@
-use binrw::{binread, NullString};
+use crate::binrw_helpers::lwo_null_string;
+use binrw::{binread};
 
 /// Store an object description. Optional. This should be a simple line of upper and lowercase
 /// characters, punctuation and spaces which describes the contents of the object file. There
@@ -7,8 +8,8 @@ use binrw::{binread, NullString};
 #[br(import(_length: u32))]
 #[derive(Debug)]
 pub struct DescriptionLine {
-    #[br(align_after = 2)]
-    pub description_line: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub description_line: String,
 }
 
 /// An iconic or thumbnail image for the object which can be used when viewing the file in a

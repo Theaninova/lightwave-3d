@@ -1,5 +1,6 @@
+use crate::binrw_helpers::lwo_null_string;
 use crate::lwo2::vx;
-use binrw::{binread, NullString};
+use binrw::{binread};
 
 pub mod blocks;
 pub mod plugin;
@@ -18,8 +19,8 @@ pub struct VectorEnvelope {
 #[br(import(_length: u32))]
 #[derive(Debug)]
 pub struct Name {
-    #[br(align_after = 2)]
-    pub name: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub name: String,
 }
 
 #[binread]

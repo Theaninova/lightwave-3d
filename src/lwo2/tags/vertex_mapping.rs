@@ -1,6 +1,6 @@
-use crate::binrw_helpers::until_size_limit;
+use crate::binrw_helpers::{lwo_null_string, until_size_limit};
 use crate::lwo2::vx;
-use binrw::{binread, NullString, PosValue};
+use binrw::{binread, PosValue};
 
 /// Associates a set of floating-point vectors with a set of points. VMAPs begin with a type,
 /// a dimension (vector length) and a name. These are followed by a list of vertex/vector pairs.
@@ -34,14 +34,14 @@ use binrw::{binread, NullString, PosValue};
 #[derive(Debug)]
 pub struct VertexMappings {
     #[br(temp)]
-    pub begin_pos: PosValue<()>,
+    begin_pos: PosValue<()>,
     pub kind: [u8; 4],
     #[br(temp)]
-    pub dimension: u16,
-    #[br(align_after = 2)]
-    pub name: NullString,
+    dimension: u16,
+    #[br(parse_with = lwo_null_string)]
+    pub name: String,
     #[br(temp)]
-    pub end_pos: PosValue<()>,
+    end_pos: PosValue<()>,
     #[br(parse_with = |reader, endian, _: ()| until_size_limit(length as u64 - (end_pos.pos - begin_pos.pos))(reader, endian, (dimension,)))]
     pub mapping: Vec<VertexMapping>,
 }

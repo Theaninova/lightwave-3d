@@ -1,7 +1,7 @@
-use crate::binrw_helpers::until_size_limit;
+use crate::binrw_helpers::{until_size_limit, lwo_null_string};
 use crate::iff::SubChunk;
 use crate::lwo2::vx;
-use binrw::{binread, NullString, PosValue};
+use binrw::{binread, PosValue};
 use crate::lwo2::sub_tags::plugin::PluginServerNameAndData;
 
 #[binread]
@@ -43,8 +43,8 @@ pub enum EnvelopeSubChunk {
 #[br(import(_length: u32))]
 #[derive(Debug)]
 pub struct PluginChannelName {
-    #[br(align_after = 2)]
-    pub channel_name: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub channel_name: String,
 }
 
 /// Defines the interpolation between the most recent KEY chunk and the KEY immediately before it in

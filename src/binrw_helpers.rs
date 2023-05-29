@@ -1,5 +1,5 @@
 use crate::lwo2::vx;
-use binrw::{binread, BinRead, BinResult, Endian};
+use binrw::{binread, BinRead, BinReaderExt, BinResult, Endian};
 use std::io::{Read, Seek};
 use std::iter::from_fn;
 
@@ -26,7 +26,6 @@ pub fn until_size_limit_with<R, Arg, T, ReadFn, Ret>(
     reader_fn: ReadFn,
 ) -> impl Fn(&mut R, Endian, Arg) -> BinResult<Ret>
 where
-    T: for<'a> BinRead<Args<'a> = Arg>,
     R: Read + Seek,
     Arg: Clone,
     ReadFn: Fn(&mut R, Endian, Arg) -> BinResult<T>,
@@ -53,6 +52,26 @@ where
             .take(n)
             .collect()
     }
+}
+
+/// LightWave uses a string that has an extra null byte if the read amount is uneven
+pub fn lwo_null_string<R>(reader: &mut R, endian: Endian, _args: ()) -> BinResult<String>
+where
+    R: Read + Seek,
+{
+        let mut buf = vec![];
+        let pos = reader.stream_position()?;
+        loop {
+            match reader.read_type::<u8>(endian)? {
+                0 if reader.stream_position()? % 2 == 0 => break,
+                0 => (),
+                b => buf.push(b),
+            }
+        }
+        String::from_utf8(buf).map_err(|err| binrw::Error::Custom {
+            err: Box::new(err),
+            pos,
+        })
 }
 
 fn default_reader<'a, T: BinRead, R: Read + Seek>(

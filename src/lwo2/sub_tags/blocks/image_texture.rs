@@ -1,8 +1,9 @@
+use crate::binrw_helpers::lwo_null_string;
 use crate::iff::SubChunk;
 use crate::lwo2::sub_tags::blocks::texture_mapping::TextureMapping;
 use crate::lwo2::sub_tags::{ValueEnvelope, VxReference};
 use crate::lwo2::vx;
-use binrw::{binread, NullString};
+use binrw::{binread};
 
 #[binread]
 #[derive(Debug)]
@@ -68,8 +69,8 @@ pub struct AntialiasingStrength {
 #[br(import(_length: u32))]
 #[derive(Debug)]
 pub struct UvMap {
-    #[br(align_after = 2)]
-    pub txuv_map_name: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub txuv_map_name: String,
 }
 
 /// For cylindrical and spherical projections, these parameters control how many times the image

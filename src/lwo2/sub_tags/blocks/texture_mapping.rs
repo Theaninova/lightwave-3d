@@ -1,8 +1,8 @@
-use crate::binrw_helpers::until_size_limit;
+use crate::binrw_helpers::{lwo_null_string, until_size_limit};
 use crate::iff::SubChunk;
 use crate::lwo2::sub_tags::VectorEnvelope;
 use crate::lwo2::vx;
-use binrw::{binread, NullString};
+use binrw::{binread};
 
 #[binread]
 #[br(import(length: u32))]
@@ -41,8 +41,8 @@ pub enum CoordinateSystem {
 #[br(import(_length: u32))]
 #[derive(Debug)]
 pub struct ReferenceObject {
-    #[br(align_after = 2)]
-    pub object_name: NullString,
+    #[br(parse_with = lwo_null_string)]
+    pub object_name: String,
 }
 
 #[binread]

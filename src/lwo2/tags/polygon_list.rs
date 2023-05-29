@@ -46,7 +46,7 @@ pub struct PolygonLists {
 #[derive(Debug)]
 pub struct PolygonList {
     #[br(temp)]
-    pub numvert_and_flags: u16,
+    numvert_and_flags: u16,
     #[br(calc = (numvert_and_flags >> 10) as u8)]
     pub flags: u8,
     #[br(parse_with = count_with_vx((numvert_and_flags & 0x3ff) as usize))]
