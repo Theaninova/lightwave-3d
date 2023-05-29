@@ -3,7 +3,7 @@ use crate::iff::SubChunk;
 use crate::lwo2::sub_tags::blocks::SurfaceBlocks;
 use crate::lwo2::sub_tags::{ValueEnvelope, VectorEnvelope, VxReference};
 use crate::lwo2::vx;
-use binrw::{binread};
+use binrw::binread;
 
 #[binread]
 #[derive(Debug)]

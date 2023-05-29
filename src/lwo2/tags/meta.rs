@@ -1,5 +1,5 @@
 use crate::binrw_helpers::lwo_null_string;
-use binrw::{binread};
+use binrw::binread;
 
 /// Store an object description. Optional. This should be a simple line of upper and lowercase
 /// characters, punctuation and spaces which describes the contents of the object file. There

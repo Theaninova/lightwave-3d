@@ -1,6 +1,6 @@
 use crate::binrw_helpers::lwo_null_string;
 use crate::lwo2::vx;
-use binrw::{binread};
+use binrw::binread;
 
 pub mod blocks;
 pub mod plugin;

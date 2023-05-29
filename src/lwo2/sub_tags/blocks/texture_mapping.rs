@@ -2,7 +2,7 @@ use crate::binrw_helpers::{lwo_null_string, until_size_limit};
 use crate::iff::SubChunk;
 use crate::lwo2::sub_tags::VectorEnvelope;
 use crate::lwo2::vx;
-use binrw::{binread};
+use binrw::binread;
 
 #[binread]
 #[br(import(length: u32))]

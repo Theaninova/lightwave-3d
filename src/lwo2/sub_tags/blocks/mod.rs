@@ -5,7 +5,7 @@ use crate::lwo2::sub_tags::blocks::image_texture::SurfaceBlockImageTextureSubChu
 use crate::lwo2::sub_tags::blocks::procedural_texture::ProceduralTextureSubChunk;
 use crate::lwo2::sub_tags::EnableState;
 use crate::lwo2::vx;
-use binrw::{binread};
+use binrw::binread;
 
 pub mod gradient_texture;
 pub mod image_texture;

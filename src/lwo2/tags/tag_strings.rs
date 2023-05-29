@@ -1,5 +1,5 @@
 use crate::binrw_helpers::{lwo_null_string, until_size_limit_with};
-use binrw::{binread};
+use binrw::binread;
 
 /// Lists the tag strings that can be associated with polygons by the PTAG chunk.
 #[binread]

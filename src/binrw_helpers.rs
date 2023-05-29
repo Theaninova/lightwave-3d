@@ -59,19 +59,19 @@ pub fn lwo_null_string<R>(reader: &mut R, endian: Endian, _args: ()) -> BinResul
 where
     R: Read + Seek,
 {
-        let mut buf = vec![];
-        let pos = reader.stream_position()?;
-        loop {
-            match reader.read_type::<u8>(endian)? {
-                0 if reader.stream_position()? % 2 == 0 => break,
-                0 => (),
-                b => buf.push(b),
-            }
+    let mut buf = vec![];
+    let pos = reader.stream_position()?;
+    loop {
+        match reader.read_type::<u8>(endian)? {
+            0 if (reader.stream_position()? - pos) % 2 == 0 => break,
+            0 => (),
+            b => buf.push(b),
         }
-        String::from_utf8(buf).map_err(|err| binrw::Error::Custom {
-            err: Box::new(err),
-            pos,
-        })
+    }
+    // as per spec there should only ever be ascii characters, but of course some people
+    // put other stuff in there.
+    // We'll just ignore this since it's *technically* an issue with the file, not with the parser
+    Ok(String::from_utf8_lossy(buf.as_slice()).to_string())
 }
 
 fn default_reader<'a, T: BinRead, R: Read + Seek>(
